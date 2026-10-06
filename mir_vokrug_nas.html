@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Мир вокруг нас — познавательный сайт</title>
+<style>
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;font-family:Arial,sans-serif;color:#eef2ff;
+  background:radial-gradient(circle at 20% 10%,#263b70 0,#11152b 35%,#080b16 75%);
+  min-height:100vh;overflow-x:hidden
+}
+body:before,body:after{content:"";position:fixed;border-radius:50%;filter:blur(80px);opacity:.25;z-index:-1}
+body:before{width:260px;height:260px;background:#7c5cff;top:10%;left:-80px}
+body:after{width:300px;height:300px;background:#20d6b5;right:-100px;bottom:5%}
+header{
+  position:sticky;top:0;z-index:20;background:rgba(8,11,22,.78);
+  backdrop-filter:blur(15px);border-bottom:1px solid #ffffff18
+}
+.nav{max-width:1100px;margin:auto;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:15px}
+.logo{font-weight:800;font-size:20px}.logo span{color:#72f0d1}
+.nav button{background:#ffffff0d;color:#fff;border:1px solid #ffffff18;padding:10px 14px;border-radius:12px;cursor:pointer}
+.nav button:hover{background:#ffffff18;transform:translateY(-2px)}
+main{max-width:1100px;margin:auto;padding:45px 20px 70px}
+.hero{text-align:center;padding:45px 10px 55px;animation:fadeUp .8s ease}
+.badge{display:inline-block;padding:8px 13px;border-radius:30px;background:#72f0d11c;border:1px solid #72f0d155;color:#72f0d1}
+h1{font-size:clamp(38px,7vw,72px);margin:18px 0 10px;line-height:1}
+.hero p{max-width:680px;margin:0 auto;color:#b9c2dc;font-size:18px;line-height:1.6}
+.tabs{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:20px 0 30px}
+.tab{padding:12px 18px;border:1px solid #ffffff18;border-radius:14px;background:#ffffff09;color:#dce4ff;cursor:pointer;transition:.25s}
+.tab.active,.tab:hover{background:#72f0d1;color:#081017;border-color:#72f0d1;transform:translateY(-2px)}
+.panel{display:none;animation:fadeUp .45s ease}.panel.active{display:block}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.card{
+  background:linear-gradient(145deg,#ffffff10,#ffffff05);border:1px solid #ffffff14;
+  border-radius:22px;padding:22px;transition:.3s;position:relative;overflow:hidden
+}
+.card:before{content:"";position:absolute;width:90px;height:90px;border-radius:50%;background:#72f0d120;right:-30px;top:-30px}
+.card:hover{transform:translateY(-7px) scale(1.01);border-color:#72f0d155;box-shadow:0 15px 40px #0005}
+.icon{font-size:34px}.card h3{margin:12px 0 8px}.card p{color:#b7c0d8;line-height:1.55}
+.more{max-height:0;overflow:hidden;transition:max-height .45s ease}.card.open .more{max-height:180px}
+.more-btn{margin-top:12px;background:none;border:0;color:#72f0d1;cursor:pointer;font-weight:bold}
+.fact{padding:22px;border-radius:20px;background:#72f0d110;border:1px solid #72f0d133;margin:20px 0;text-align:center}
+details{background:#ffffff08;border:1px solid #ffffff14;border-radius:16px;margin:10px 0;padding:17px;transition:.3s}
+details[open]{background:#ffffff0e;border-color:#72f0d155}
+summary{cursor:pointer;font-weight:bold}details p{color:#b9c2dc;line-height:1.6}
+.quiz{max-width:700px;margin:auto}.question{font-size:21px;margin-bottom:18px}
+.answers{display:grid;gap:10px}.answer{padding:14px;border-radius:13px;background:#ffffff0b;border:1px solid #ffffff16;color:#fff;text-align:left;cursor:pointer}
+.answer:hover{background:#ffffff18}.answer.correct{background:#1c9b78}.answer.wrong{background:#a9435c}
+#result{text-align:center;margin-top:18px;font-weight:bold}
+footer{text-align:center;color:#7f8aa7;padding:25px;border-top:1px solid #ffffff12}
+.modal{position:fixed;inset:0;background:#0009;display:none;align-items:center;justify-content:center;z-index:50;padding:20px}
+.modal.show{display:flex}.modal-box{max-width:550px;background:#11172a;border:1px solid #ffffff20;border-radius:24px;padding:28px;animation:pop .3s ease;box-shadow:0 30px 80px #0008}
+.close{float:right;border:0;background:none;color:#fff;font-size:26px;cursor:pointer}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes pop{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
+@media(max-width:600px){.nav{padding:12px}.nav button{padding:8px}.hero{padding-top:25px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="nav">
+    <div class="logo">🌍 Мир <span>вокруг нас</span></div>
+    <button onclick="openModal()">ℹ️ О сайте</button>
+  </div>
+</header>
+
+<main>
+<section class="hero">
+  <div class="badge">✨ Познавательный интерактивный сайт</div>
+  <h1>Мир вокруг нас</h1>
+  <p>Небольшая интерактивная энциклопедия о вещах, которыми мы пользуемся каждый день. Нажимай, открывай и проверяй себя.</p>
+</section>
+
+<div class="tabs">
+  <button class="tab active" onclick="showTab('science',this)">🔬 Наука</button>
+  <button class="tab" onclick="showTab('tech',this)">💻 Технологии</button>
+  <button class="tab" onclick="showTab('space',this)">🚀 Космос</button>
+  <button class="tab" onclick="showTab('quiz',this)">🧠 Мини-тест</button>
+</div>
+
+<section id="science" class="panel active">
+  <div class="grid">
+    <article class="card"><div class="icon">⚡</div><h3>Электричество</h3><p>Электрический ток помогает работать телефону, лампе и компьютеру.</p><div class="more"><p>Ток — это направленное движение электрически заряженных частиц.</p></div><button class="more-btn" onclick="toggleCard(this)">Узнать больше ↓</button></article>
+    <article class="card"><div class="icon">🧬</div><h3>ДНК</h3><p>ДНК хранит генетическую информацию живых организмов.</p><div class="more"><p>Её можно представить как инструкцию, по которой клетки создают нужные белки.</p></div><button class="more-btn" onclick="toggleCard(this)">Узнать больше ↓</button></article>
+    <article class="card"><div class="icon">🌈</div><h3>Радуга</h3><p>Радуга появляется, когда свет проходит через капли воды.</p><div class="more"><p>Белый солнечный свет преломляется и разделяется на разные цвета.</p></div><button class="more-btn" onclick="toggleCard(this)">Узнать больше ↓</button></article>
+  </div>
+  <div class="fact">💡 <b>Факт:</b> свет от Солнца до Земли идёт примерно 8 минут 20 секунд.</div>
+</section>
+
+<section id="tech" class="panel">
+  <div class="grid">
+    <article class="card"><div class="icon">📱</div><h3>Смартфон</h3><p>Внутри телефона находятся процессор, память, камера, датчики и другие компоненты.</p><div class="more"><p>Процессор выполняет команды, память хранит данные, а датчики помогают телефону понимать окружающий мир.</p></div><button class="more-btn" onclick="toggleCard(this)">Узнать больше ↓</button></article>
+    <article class="card"><div class="icon">🌐</div><h3>Интернет</h3><p>Интернет соединяет огромное количество устройств по всему миру.</p><div class="more"><p>Когда ты открываешь сайт, устройство отправляет запрос на сервер и получает нужные данные обратно.</p></div><button class="more-btn" onclick="toggleCard(this)">Узнать больше ↓</button></article>
+    <article class="card"><div class="icon">🤖</div><h3>Искусственный интеллект</h3><p>ИИ может находить закономерности в данных и выполнять разные задачи.</p><div class="more"><p>Современные модели обучаются на больших наборах данных и используют математические алгоритмы.</p></div><button class="more-btn" onclick="toggleCard(this)">Узнать больше ↓</button></article>
+  </div>
+  <h2>❓ Частые вопросы</h2>
+  <details><summary>Что такое сайт?</summary><p>Сайт — это набор связанных веб-страниц, которые открываются в браузере.</p></details>
+  <details><summary>Что такое HTML?</summary><p>HTML задаёт структуру страницы: заголовки, текст, изображения, кнопки и другие элементы.</p></details>
+  <details><summary>Зачем нужен CSS?</summary><p>CSS отвечает за внешний вид страницы: цвета, размеры, расположение и анимации.</p></details>
+</section>
+
+<section id="space" class="panel">
+  <div class="grid">
+    <article class="card"><div class="icon">☀️</div><h3>Солнце</h3><p>Солнце — звезда, вокруг которой движется Земля.</p></article>
+    <article class="card"><div class="icon">🌍</div><h3>Земля</h3><p>Наша планета делает один оборот вокруг Солнца примерно за 365 дней.</p></article>
+    <article class="card"><div class="icon">🌙</div><h3>Луна</h3><p>Луна — естественный спутник Земли. Она отражает солнечный свет.</p></article>
+  </div>
+  <div class="fact">🚀 <b>Интересно:</b> в космосе нет воздуха, поэтому обычный звук не может распространяться так, как на Земле.</div>
+</section>
+
+<section id="quiz" class="panel">
+  <div class="quiz card">
+    <div class="question" id="q">Готова проверить знания?</div>
+    <div class="answers" id="answers"></div>
+    <div id="result"></div>
+  </div>
+</section>
+</main>
+
+<footer>Сделано как учебный проект • HTML + CSS + JavaScript</footer>
+
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <button class="close" onclick="closeModal()">×</button>
+    <h2>О сайте 🌍</h2>
+    <p>Этот сайт создан как пример интерактивного учебного проекта. Здесь есть вкладки, раскрывающиеся карточки, вопросы, анимации и мини-тест.</p>
+    <p>Главная идея — показать, что учебный сайт может быть не скучным.</p>
+  </div>
+</div>
+
+<script>
+function showTab(id,btn){
+  document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({top:document.querySelector('.tabs').offsetTop-80,behavior:'smooth'});
+}
+function toggleCard(btn){
+  const card=btn.parentElement;
+  card.classList.toggle('open');
+  btn.textContent=card.classList.contains('open')?'Скрыть ↑':'Узнать больше ↓';
+}
+function openModal(){document.getElementById('modal').classList.add('show')}
+function closeModal(){document.getElementById('modal').classList.remove('show')}
+window.onclick=e=>{if(e.target.id==='modal')closeModal()}
+
+const questions=[
+ {q:'Что хранит ДНК?',a:['Генетическую информацию','Только воду','Электрический ток'],c:0},
+ {q:'Что отвечает за внешний вид сайта?',a:['CSS','GPS','Wi-Fi'],c:0},
+ {q:'Сколько примерно идёт свет от Солнца до Земли?',a:['8 минут','8 часов','8 секунд'],c:0},
+ {q:'Что является спутником Земли?',a:['Луна','Марс','Солнце'],c:0}
+];
+let qi=0,score=0;
+function loadQ(){
+  if(qi>=questions.length){
+    document.getElementById('q').textContent='🎉 Тест закончен!';
+    document.getElementById('answers').innerHTML='';
+    document.getElementById('result').textContent=`Твой результат: ${score} из ${questions.length}`;
+    return;
+  }
+  const x=questions[qi];
+  document.getElementById('q').textContent=x.q;
+  document.getElementById('result').textContent='';
+  document.getElementById('answers').innerHTML=x.a.map((a,i)=>`<button class="answer" onclick="answer(${i})">${a}</button>`).join('');
+}
+function answer(i){
+  const x=questions[qi];
+  document.querySelectorAll('.answer').forEach((b,n)=>{b.disabled=true;if(n===x.c)b.classList.add('correct');if(n===i&&i!==x.c)b.classList.add('wrong')});
+  if(i===x.c)score++;
+  setTimeout(()=>{qi++;loadQ()},650);
+}
+loadQ();
+</script>
+</body>
+</html>
